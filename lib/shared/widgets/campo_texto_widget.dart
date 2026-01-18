@@ -61,6 +61,11 @@ class CampoTexto extends StatelessWidget {
           obscureText: obscureText ?? false,
           decoration: InputDecoration(
             hintText: placeholder,
+            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.color?.withAlpha(128),
+            ),
             prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
             suffixIcon: suffixIcon != null
                 ? Focus(
