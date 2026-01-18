@@ -62,10 +62,19 @@ class Auth extends _$Auth {
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
-      final authRepository = ref.read(authRepositoryProvider);
-      final authModel = await authRepository.login(email, senha);
-      await setAuthModelSecure(authModel);
-      return authModel.accessToken;
+      try {
+        final authRepository = ref.read(authRepositoryProvider);
+        final authModel = await authRepository.login(email, senha);
+        await setAuthModelSecure(authModel);
+        return authModel.accessToken;
+      } on DioException catch (e) {
+        if (e.response?.data != null) {
+          final apiError = ApiError.fromJson(e.response!.data);
+          throw apiError.message;
+        } else {
+          throw 'Erro ao realizar login';
+        }
+      }
     });
   }
 
