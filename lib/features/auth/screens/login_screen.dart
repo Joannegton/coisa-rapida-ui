@@ -1,8 +1,10 @@
+import 'package:coisa_rapida/core/constants/app_routes_constants.dart';
 import 'package:coisa_rapida/features/auth/providers/auth_provider.dart';
 import 'package:coisa_rapida/shared/utils/ui_utils.dart';
 import 'package:coisa_rapida/shared/widgets/campo_texto_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:validatorless/validatorless.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -117,9 +119,41 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
           const SizedBox(height: 16),
 
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Senha',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                ),
+              ),
+              TextButton(
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        context.push(AppRoutes.recuperarSenha);
+                      },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  'Esqueci minha senha',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+
           CampoTexto(
             controller: _senhaController,
-            label: 'Senha',
             placeholder: 'Digite sua senha',
             prefixIcon: Icons.lock_outline,
             suffixIcon: IconButton(
@@ -137,36 +171,37 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             validator: Validatorless.required('Senha é obrigatória'),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
           FilledButton(
             onPressed: (isLoading || !_camposPreenchidos) ? null : _handleLogin,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: isLoading
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                  : const Text('Entrar'),
-            ),
+            child: isLoading
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
+                : const Text('Entrar'),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
-          // Link para recuperação de senha (opcional)
-          TextButton(
-            onPressed: isLoading
-                ? null
-                : () {
-                    // Navegar para recuperação de senha
-                    // context.push('/recuperar-senha');
-                  },
-            child: const Text('Esqueceu sua senha?'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Não tem uma conta?'),
+              TextButton(
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        context.push(AppRoutes.cadastro);
+                      },
+                child: const Text('Cadastre-se'),
+              ),
+            ],
           ),
         ],
       ),

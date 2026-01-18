@@ -1,5 +1,6 @@
 import 'package:coisa_rapida/features/auth/providers/auth_provider.dart';
 import 'package:coisa_rapida/features/auth/screens/login_screen.dart';
+import 'package:coisa_rapida/features/auth/screens/recuperar_senha_screen.dart';
 import 'package:coisa_rapida/features/auth/screens/splash_screen.dart';
 import 'package:coisa_rapida/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,11 @@ GoRouter router(RouterRef ref) {
         path: AppRoutes.login,
         name: 'login',
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.recuperarSenha,
+        name: 'recuperar-senha',
+        builder: (context, state) => const RecuperarSenhaScreen(),
       ),
       GoRoute(
         path: AppRoutes.home,
