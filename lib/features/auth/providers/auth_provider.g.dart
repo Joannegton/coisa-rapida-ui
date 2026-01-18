@@ -23,7 +23,7 @@ final authRepositoryProvider = AutoDisposeProvider<AuthRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AuthRepositoryRef = AutoDisposeProviderRef<AuthRepository>;
-String _$authDioHash() => r'0f2fea6b122df8b135258e113e92c2b2ff769d29';
+String _$authDioHash() => r'4762317991c7aa006ebf885f22783f77c076f560';
 
 /// Dio separado para autenticação, sem interceptors para evitar dependência circular
 ///
@@ -42,7 +42,7 @@ final authDioProvider = AutoDisposeProvider<Dio>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AuthDioRef = AutoDisposeProviderRef<Dio>;
-String _$authHash() => r'74ef10b968d305f9575a1f835072083ab93bccac';
+String _$authHash() => r'f82c00b733196f9ca73465f8114d1e80a30b820f';
 
 /// See also [Auth].
 @ProviderFor(Auth)

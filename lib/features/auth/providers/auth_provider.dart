@@ -7,6 +7,7 @@ import 'package:coisa_rapida/shared/providers/secure_storage_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:coisa_rapida/features/auth/models/api_error_model.dart';
 
 part 'auth_provider.g.dart';
 
@@ -68,6 +69,36 @@ class Auth extends _$Auth {
     });
   }
 
+  Future<void> cadastrar({
+    required String nome,
+    required String email,
+    required String cpf,
+    required String senha,
+  }) async {
+    state = const AsyncValue.loading();
+
+    state = await AsyncValue.guard(() async {
+      try {
+        final authRepository = ref.read(authRepositoryProvider);
+        final authModel = await authRepository.cadastrar(
+          nome: nome,
+          email: email,
+          cpf: cpf,
+          senha: senha,
+        );
+        await setAuthModelSecure(authModel);
+        return authModel.accessToken;
+      } on DioException catch (e) {
+        if (e.response?.data != null) {
+          final apiError = ApiError.fromJson(e.response!.data);
+          throw apiError.message;
+        } else {
+          throw 'Erro ao cadastrar';
+        }
+      }
+    });
+  }
+
   Future<void> logout() async {
     try {
       final secureStorage = ref.read(secureStorageProvider);
@@ -115,7 +146,7 @@ class Auth extends _$Auth {
 /// Dio separado para autenticação, sem interceptors para evitar dependência circular
 @riverpod
 Dio authDio(Ref ref) {
-  return Dio(
+  final dio = Dio(
     BaseOptions(
       baseUrl: AppConfig.apiBaseUrl,
       connectTimeout: const Duration(seconds: 30),
@@ -125,4 +156,6 @@ Dio authDio(Ref ref) {
       validateStatus: (status) => status != null && status < 400,
     ),
   );
+
+  return dio;
 }

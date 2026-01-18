@@ -14,7 +14,25 @@ class AuthRepository {
       );
       return AuthModel.fromJson(response.data);
     } catch (e) {
-      throw Exception('Erro ao fazer login: $e');
+      rethrow;
+    }
+  }
+
+  Future<AuthModel> cadastrar({
+    required String nome,
+    required String email,
+    required String cpf,
+    required String senha,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/auth/registrar',
+        data: {'nome': nome, 'email': email, 'cpf': cpf, 'senha': senha},
+      );
+
+      return AuthModel.fromJson(response.data);
+    } catch (e) {
+      rethrow;
     }
   }
 

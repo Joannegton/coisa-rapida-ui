@@ -74,7 +74,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<String?>>(authProvider, (previous, next) {
-      if (next.hasError) {
+      if (next.hasError && previous is AsyncLoading) {
         UiUtils.mostrarErro(context, next.error.toString());
       }
     });
